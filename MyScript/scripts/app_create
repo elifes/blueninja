@@ -1,0 +1,49 @@
+#! /bin/bash
+
+export BASE=$HOME/Cerevo/CDP-TZ01B/
+export PATH=${PATH}:${BASE}scripts
+export TOOL_DIR=${BASE}tools/bin/
+export SDK_DIR=${BASE}sdk/
+export OCD_BIN_DIR=/usr/bin/
+export OCD_CFG_DIR=/usr/share/openocd/scripts/
+
+if [ $# -eq 0 ]; then
+	echo set APP_DIR_NAME. - usage: app_create APP_DIR_NAME
+	exit
+fi
+
+if [ -e $1 ]; then
+	echo APP_DIR_NAME found. : delete APP_DIR_NAME
+	exit
+fi 
+
+mkdir $1
+
+for file in `\find ${SDK_DIR}1.*.patch  -name '*.patch'`; do
+	export ver_num=`basename $file | cut -c 1-6`
+done
+
+rsync -a --exclude "*.doxyfile" ${BASE}skel/ $1
+
+mkdir $1/RTE
+mkdir -p $1/RTE/Device/TZ1001MBG/
+mkdir -p $1/RTE/Middleware/TZ1001MBG/
+cp -r ${SDK_DIR}TOSHIBA.TZ10xx_DFP.${ver_num}/RTE_Driver/Config/* $1/RTE/Device/TZ1001MBG/
+cp -r ${SDK_DIR}TOSHIBA.TZ10xx_DFP.${ver_num}/Middleware/blelib/Config/* $1/RTE/Middleware/TZ1001MBG/
+cp -r ${SDK_DIR}TOSHIBA.TZ10xx_DFP.${ver_num}/Middleware/TWiC/Config/* $1/RTE/Middleware/TZ1001MBG/
+cp ${SDK_DIR}TOSHIBA.TZ10xx_DFP.${ver_num}/Boards/TOSHIBA/RBTZ1000/Template/RTE/RTE_Components.h $1/RTE/
+
+cd $1
+
+for file in `\find ./ -type f -name \*`; do
+	fromdos ${file}
+done
+sed -i -e "s/\\\\/\//g" ${SDK_DIR}${ver_num}.patch 
+patch -p0 < ${SDK_DIR}${ver_num}.patch
+
+sed -i -e "s/^TARGET.*$/TARGET=$1/g" Makefile
+sed -i -e "s/^DFP_VER.*$/DFP_VER=${ver_num}/g" Makefile
+sed -i -e "s|^TOOL_DIR.*$|TOOL_DIR=${TOOL_DIR}|g" Makefile
+sed -i -e "s|^SDK_DIR.*$|SDK_DIR=${SDK_DIR}|g" Makefile
+
+exit
