@@ -1,2 +1,3 @@
 # blueninja
-BlueNinja
+
+setup for Blueninja development environment.
