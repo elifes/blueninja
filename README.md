@@ -2,7 +2,7 @@
 
 setup for Blueninja development environment.
 
-1  git clone blueninja
+1  git clone https://github.com/elifes/blueninja.git
 
 2  cd blueninja
 
@@ -16,6 +16,4 @@ setup for Blueninja development environment.
  
 5  please wait a moment.
 
-----------------------------
-１　任意のディレクトリでgitコマンドでファイルをダウンロードします。
-２　
+
