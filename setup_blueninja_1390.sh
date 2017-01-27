@@ -39,7 +39,7 @@ export CMSIS_FILE_NAME=ARM.CMSIS.3.20.4.pack
 if [ ! -e ${CMSIS_FILE_NAME} ]; then
 	wget https://sadevicepacksprodus.blob.core.windows.net/pack/${CMSIS_FILE_NAME}
 fi
-unzip -qd ${BASE}sdk/${CMSIS_FILE_NAME}
+unzip -qd ${BASE}sdk/ ${CMSIS_FILE_NAME}
 
 export GCC_FILE_NAME=gcc-arm-none-eabi-6_2-2016q4-20161216-linux.tar.bz2
 if [ ! -e ${GCC_FILE_NAME} ]; then
