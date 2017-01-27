@@ -7,9 +7,9 @@ export OCD_CFG_DIR=/usr/share/openocd/scripts/
 export CMSIS_CFG=interface/cmsis-dap.cfg 
 export TZ10XX_CFG=target/tz10xx.cfg
 
-openocd -s ${OCD_CFG_DIR} -f ${CMSIS_CFG} -f ${TZ10XX_CFG} 
+openocd -s ${OCD_CFG_DIR} -f ${CMSIS_CFG} -f ${TZ10XX_CFG} &
+pid=$!
 
 ${TOOL_DIR}arm-none-eabi-gdb -ex "target remote localhost:3333" -ex "monitor reset init" $1
 
-#rem Terminate OpenOCD
-#taskkill /FI "WINDOWTITLE eq TZ10xx OpenOCD"
+kill $pid
