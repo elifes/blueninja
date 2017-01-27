@@ -5,4 +5,4 @@ export SDK_DIR=${BASE}sdk/
 export OCD_BIN_DIR=/usr/bin/
 export OCD_CFG_DIR=/usr/share/openocd/scripts/
 
-PS1='\[\033[0;31m\][BlueNinja($TERM) $PWD]$ '
+PS1='[BlueNinja($TERM) $PWD]$ '
