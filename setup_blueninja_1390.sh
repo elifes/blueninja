@@ -4,7 +4,10 @@ apt-get -y install git
 apt-get -y install OpenOCD
 apt-get -y install tofrodos
 
-git clone https://bitbucket.org/cerevo/blueninja_bsp.git
+CEREVO_FILE_NAME=blueninja_bsp
+if [ ! -e "${CEREVO_FILE_NAME}" ]; then
+	git clone https://bitbucket.org/cerevo/blueninja_bsp.git
+fi
 
 echo "Download and copy OSHIBA.TZ10xx_DFP.*.pack files into blueninja_bsp/install_files/"
 echo ". Please Enter key. restart."
@@ -12,7 +15,8 @@ read Wait
 
 echo "Please wait a moment."
 
-export BASE=$HOME/Cerevo/CDP-TZ01B/
+export CEREVO_BASE=Cerevo
+export BASE=$HOME/$CEREVO_BASE/CDP-TZ01B/
 export GIT_BSP_BASE=blueninja_bsp
 export BSP_INST_FILES_DIR=install_files/
 export OPENOCD_INST_DIR=/usr/share/openocd
@@ -88,6 +92,16 @@ cd ../
 cp -rf _TZ1/* ${BASE}
 cd ../
 cp -rf MyScript/* ${BASE}
+
+NUSER=$USER
+SUDO_USER=$SUDO_USER
+if [ "$NUSER" != "root" ]; then
+        echo "not root"
+        exit
+fi
+if [ -n "$SUDO_USER" -a "$SUDO_USER" != "$NUSER" ]; then
+	chown -Rf $SUDO_USER:$SUDO_USER $HOME/$CEREVO_BASE
+fi
 
 echo "Done."
 
