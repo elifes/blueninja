@@ -4,7 +4,7 @@ apt-get -y install git
 apt-get -y install OpenOCD
 apt-get -y install tofrodos
 
-git clone https://bitbucket.org/cerevo/blueninja_bsp.git
+git clone https://github.com/elifes/blueninja.git
 
 echo "Download and copy OSHIBA.TZ10xx_DFP.*.pack files into blueninja_bsp/install_files/"
 echo ". Please Enter key. restart."
